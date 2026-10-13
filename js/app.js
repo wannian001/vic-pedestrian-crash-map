@@ -2,7 +2,7 @@
 // comparison of the selected area with Victoria, and the fixed overview. Built on the dayring design kit.
 import { esc, installTooltip } from "../kit/js/charts.js";
 import { load, filtered, hexes, hexCentre, selectedMask, factor, bandOf, BANDS, FACTORS } from "./model.js";
-import { getLang, setLang, t, num, pct, sevName, bandName, ageName, valueName, dateText, timeText } from "./i18n.js";
+import { getLang, setLang, t, tIn, num, pct, sevName, bandName, ageName, valueName, dateText, timeText } from "./i18n.js";
 import { createMap } from "./map.js";
 
 const REPO = "https://github.com/wannian001/vic-pedestrian-crash-map";
@@ -55,7 +55,7 @@ function skeleton() {
     </div>
   </div></header>
   <main>
-    <div class="head"><div><h1 id="title"></h1><div class="sub" id="sub"></div></div></div>
+    <div class="head"><div><h1 id="title"></h1><p class="h1-alt" id="title-alt"></p><div class="sub" id="sub"></div><div class="sub" id="sub-alt"></div></div></div>
     <div class="grid">
       <section class="card span-8 map-card" aria-labelledby="view-label">
         <div class="map-bar">
@@ -96,13 +96,20 @@ function skeleton() {
 // ---- static text ---------------------------------------------------------------------------------------
 function renderStatic() {
   const ov = data.overview;
-  document.title = `${t("page.title")} · ${t("app.name")}`;
+  // the head is in both languages: the current one first, the other under it; the rest follows the language button
+  const other = getLang() === "zh" ? "en" : "zh";
+  document.title = `${t("page.title")} · ${tIn(other, "page.title")}`;
   document.getElementById("app-name").textContent = t("app.name");
   document.getElementById("lang").textContent = t("ui.lang");
   const mode = document.getElementById("mode");
   mode.title = t("ui.mode"); mode.setAttribute("aria-label", t("ui.mode"));
   document.getElementById("title").textContent = t("page.title");
   document.getElementById("sub").textContent = t("page.sub", { n: num(data.n) });
+  for (const [id, key] of [["title-alt", "page.title"], ["sub-alt", "page.sub"]]) {
+    const el = document.getElementById(id);
+    el.textContent = tIn(other, key, { n: num(data.n) });
+    el.lang = other === "zh" ? "zh-CN" : "en";
+  }
   document.getElementById("view-label").textContent = t("view.label");
   document.getElementById("views").setAttribute("aria-label", t("view.label"));
 
