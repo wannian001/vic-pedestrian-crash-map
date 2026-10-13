@@ -125,7 +125,7 @@ function sidebar() {
   const brand = side.querySelector(".brand");
   const label = () => {
     if (folded() && wide()) { brand.title = t("ui.unfold"); brand.setAttribute("aria-label", t("ui.unfold")); }
-    else { brand.removeAttribute("title"); brand.removeAttribute("aria-label"); }
+    else { brand.removeAttribute("title"); brand.setAttribute("aria-label", t("app.name")); }  // the name hides on narrow screens
   };
   const setFold = (on) => { document.documentElement.classList.toggle("side-folded", on); store.set("side", on ? "folded" : "open"); label(); };
   label();
