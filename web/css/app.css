@@ -1,0 +1,118 @@
+/* The crash map's own rules on top of the dayring kit (kit/css). Data colours were checked with the dataviz
+   validator: the hex ramp is one hue, lighter to darker on the light map (more crashes = darker) and the other way
+   round on the dark map, each step clearly apart and the faintest step at least 2:1 against its basemap; the two
+   "higher / lower than Victoria" colours pass the colour-vision checks in both modes. */
+
+:root {
+  --hex-0: #e18f4b; --hex-1: #db702c; --hex-2: #cf521b; --hex-3: #bc3718; --hex-4: #a3231e; --hex-5: #871823;
+  --crash: #a3231e;
+  --sensor: #52607a;
+  --diff-up: #048e7a;
+  --diff-down: #6a53bd;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-mode="light"]) {
+    --hex-0: #b9402c; --hex-1: #d45624; --hex-2: #e97125; --hex-3: #f98f38; --hex-4: #ffb164; --hex-5: #fed2a0;
+    --crash: #f98f38;
+    --sensor: #a3b0c8;
+    --diff-up: #02a99b;
+    --diff-down: #927fe7;
+  }
+}
+:root[data-mode="dark"] {
+  --hex-0: #b9402c; --hex-1: #d45624; --hex-2: #e97125; --hex-3: #f98f38; --hex-4: #ffb164; --hex-5: #fed2a0;
+  --crash: #f98f38;
+  --sensor: #a3b0c8;
+  --diff-up: #02a99b;
+  --diff-down: #927fe7;
+}
+
+/* ---- the map card ---- */
+.map-card { padding: 0; overflow: hidden; display: flex; flex-direction: column; }
+.map-bar { display: flex; align-items: center; justify-content: space-between; gap: var(--s-3); flex-wrap: wrap; padding: var(--s-4) var(--s-5) var(--s-3); }
+#map { position: relative; flex: 1 1 auto; min-height: 640px; background: var(--surface-2); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+.map-foot { padding: var(--s-3) var(--s-5) var(--s-4); display: flex; flex-direction: column; gap: var(--s-2); }
+.map-foot .legend { gap: var(--s-2) var(--s-4); align-items: center; }
+.map-tools { gap: var(--s-2); }
+.map-tools .tool[aria-pressed="true"] { background: var(--accent-soft); color: var(--accent); border-color: transparent; }
+.map-tools .tool[hidden] { display: none; }
+.map-hint { margin: 0; }
+@media (max-width: 640px) {
+  .map-bar { padding: var(--s-3) var(--s-4) var(--s-2); }
+  .map-foot { padding: var(--s-3) var(--s-4); }
+  #map { flex: none; height: 62vh; min-height: 360px; }
+}
+
+.map-canvas { position: absolute; left: 0; top: 0; z-index: 1; pointer-events: none; transition: opacity .12s var(--ease); }
+.map-box { position: absolute; display: none; z-index: 1; pointer-events: none; border: 1.5px dashed var(--accent); background: var(--accent-soft); border-radius: 4px; }
+#map.boxing, #map.boxing canvas { cursor: crosshair !important; }
+
+/* MapLibre's controls in the kit's look */
+.maplibregl-map { font-family: var(--font); }
+.maplibregl-ctrl-group { background: var(--surface) !important; border: 1px solid var(--line-2); border-radius: var(--r-md) !important; box-shadow: var(--shadow) !important; overflow: hidden; }
+.maplibregl-ctrl-group button + button { border-top: 1px solid var(--line) !important; }
+.maplibregl-ctrl-group button:not(:disabled):hover { background: var(--surface-2) !important; }
+:root[data-mode="dark"] .maplibregl-ctrl-icon { filter: invert(1); }
+@media (prefers-color-scheme: dark) { :root:not([data-mode="light"]) .maplibregl-ctrl-icon { filter: invert(1); } }
+.maplibregl-ctrl-attrib { background: var(--header) !important; color: var(--ink-3); font-size: 10.5px; }
+.maplibregl-ctrl-attrib a { color: var(--ink-2); }
+.maplibregl-ctrl-attrib-button { background-color: var(--surface) !important; }
+
+/* legend keys: a hex for the ramp, dots for crashes and sensors */
+.key i.hexkey { width: 13px; height: 12px; border-radius: 0; clip-path: polygon(25% 0, 75% 0, 100% 50%, 75% 100%, 25% 100%, 0 50%); }
+.key i.hexkey.ring { background: var(--accent); position: relative; }
+.key i.hexkey.ring::after { content: ""; position: absolute; inset: 2.5px; background: var(--surface); clip-path: inherit; }
+.key i.dotkey { width: 10px; height: 10px; border-radius: 50%; }
+.key i.dotkey.sel { background: var(--accent); box-shadow: 0 0 0 1.5px var(--surface), 0 0 0 2.5px var(--line-2); }
+.key i.dotkey.sensor { width: 14px; height: 14px; border: 1.2px solid var(--sensor); background: color-mix(in srgb, var(--sensor) 28%, transparent); }
+
+.tip.map-tip { white-space: pre-line; max-width: 300px; }
+
+/* ---- filters ---- */
+.filters { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--s-3); }
+.filter { display: grid; grid-template-columns: 112px minmax(0, 1fr); align-items: center; gap: var(--s-3); font-size: var(--t-sm); color: var(--ink-2); }
+.filter select {
+  font: inherit; color: var(--ink); background: var(--surface-2); border: 1px solid var(--line-2); border-radius: var(--r-sm);
+  height: 32px; padding: 0 var(--s-2); min-width: 0; width: 100%;
+}
+.filter .seg { justify-self: start; flex-wrap: wrap; }
+@media (max-width: 360px) { .filter { grid-template-columns: minmax(0, 1fr); gap: var(--s-1); } }
+
+/* ---- selection vs Victoria ---- */
+.cmp-status { margin: 0 0 var(--s-2); }
+.cmp-status .chip { white-space: normal; height: auto; min-height: 24px; padding: 3px 10px; }
+.cmp-list { display: flex; flex-direction: column; margin-top: var(--s-3); }
+details.cmp { border-top: 1px solid var(--line); }
+details.cmp summary {
+  list-style: none; cursor: pointer; padding: 10px 0; display: grid; align-items: center; gap: 2px var(--s-3);
+  grid-template-columns: minmax(0, 1fr) auto; grid-template-areas: "factor vals" "cond d" "bar bar";
+}
+details.cmp summary::-webkit-details-marker { display: none; }
+.cmp-factor { grid-area: factor; font-size: var(--t-xs); font-weight: 650; color: var(--ink-3); letter-spacing: .04em; text-transform: uppercase; }
+.cmp-factor::before { content: "›"; display: inline-block; width: 12px; color: var(--ink-3); transition: transform .12s var(--ease); }
+details.cmp[open] .cmp-factor::before { transform: rotate(90deg); }
+.cmp-cond { grid-area: cond; font-weight: 600; font-size: var(--t-md); min-width: 0; }
+.cmp-vals { grid-area: vals; font-size: var(--t-xs); color: var(--ink-2); text-align: right; }
+.cmp-d { grid-area: d; font-weight: 650; text-align: right; }
+.cmp-d small { font-weight: 550; color: var(--ink-3); font-size: var(--t-xs); }
+details.cmp summary > .dbar { grid-area: bar; margin-top: 4px; }
+.dbar { position: relative; display: block; height: 8px; border-radius: 4px; background: var(--c-band); overflow: hidden; min-width: 60px; }
+.dbar::before { content: ""; position: absolute; left: 50%; top: -2px; bottom: -2px; width: 1px; background: var(--c-axis); }
+.dbar > span { position: absolute; top: 0; bottom: 0; min-width: 2px; }
+.cmp-axis { display: flex; justify-content: space-between; padding-top: var(--s-1); border-top: 1px solid var(--line); }
+.cmp-table { margin: 0 0 var(--s-3); }
+.cmp-table th, .cmp-table td { font-size: var(--t-xs); padding-top: 6px; padding-bottom: 6px; }
+.cmp-table .r { text-align: right; white-space: nowrap; }
+.cmp-table tr.top th[scope="row"] { font-weight: 700; }
+.cmp-table td.gap { width: 38%; }
+.cmp-table td.gap .dbar { display: inline-block; vertical-align: middle; width: calc(100% - 46px); }
+.cmp-table td.gap .num { display: inline-block; width: 42px; text-align: right; }
+
+/* ---- overview and about ---- */
+.facts.overview { margin-top: 0; }
+.facts.overview div { align-items: baseline; }
+.facts.overview dt { flex: none; width: 92px; }
+.facts.overview dd { font-weight: 500; text-align: left; flex: 1; }
+.about-p { margin: 0 0 var(--s-3); color: var(--ink-2); line-height: 1.55; }
+.limits { margin: var(--s-2) 0 0; padding-left: 1.2em; color: var(--ink-2); line-height: 1.55; }
+.limits li { margin: 2px 0; }

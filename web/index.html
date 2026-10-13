@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="color-scheme" content="light dark">
+  <meta name="description" content="Where pedestrian crashes concentrate in Victoria, and what sets those places apart: 17,510 crashes, 2012 – Nov 2025, on one interactive map.">
+  <title>Pedestrian crash hotspots in Victoria</title>
+  <link rel="icon" href="icon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/maplibre-gl/4.7.1/maplibre-gl.min.css">
+  <!-- the dayring design kit (tokens, components), then this page's own rules -->
+  <link rel="stylesheet" href="kit/css/tokens.css">
+  <link rel="stylesheet" href="kit/css/kit.css">
+  <link rel="stylesheet" href="css/app.css">
+  <script>
+    // apply a saved light/dark choice before first paint so the page does not flash
+    try {
+      var m = new URLSearchParams(location.search).get("mode") || localStorage.getItem("crashmap.mode");
+      if (m === "light" || m === "dark") document.documentElement.dataset.mode = m;
+    } catch (e) {}
+    // if a script could not be loaded (a dropped connection), say so instead of loading forever
+    function crashmapFailed() {
+      if (window.crashmapStarted || !document.querySelector("main")) return;
+      var zh = (navigator.language || "").slice(0, 2) === "zh";
+      document.querySelector("main").innerHTML = '<div class="card"><p class="lede">' + (zh ? "这一页没加载完" : "The page did not finish loading") +
+        '</p><p><button class="tool" type="button" onclick="location.reload()">' + (zh ? "重新加载" : "Reload") + "</button></p></div>";
+    }
+    setTimeout(crashmapFailed, 15000);
+  </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/maplibre-gl/4.7.1/maplibre-gl.min.js" onerror="crashmapFailed()"></script>
+  <script type="module" src="js/app.js" onerror="crashmapFailed()"></script>
+</head>
+<body>
+  <main aria-live="polite"><p class="muted">Loading…</p></main>
+</body>
+</html>

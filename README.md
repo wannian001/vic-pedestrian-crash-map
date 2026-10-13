@@ -2,7 +2,7 @@
 
 墨尔本大学 GEOM90007 信息可视化课程的个人作业，2026 年 8 月用 Tableau 完成。得分 84.3/100，班均 70.0。
 
-2026 年 10 月在提交版之外加了一份浅色版，只改了地图配色，见[提交后的改色](#提交后的改色)。
+2026 年 10 月在提交版之外加了一份浅色版，只改了地图配色，见[提交后的改色](#提交后的改色)；另外做了一个不用装 Tableau 的[网页版样例](#网页版样例)。
 
 [English below](#english)
 
@@ -25,7 +25,31 @@
 - 得分 84.3/100，班均 70.0（291 人）。
 - 看板上能直接读到几条发现。比如，65 岁以上行人占全部事故的 20.4%，却占死亡事故的 41.8%；15:00～18:00 的事故最多。
 
-## 怎么打开
+## 网页版样例
+
+`web/` 里是这个看板的网页版，不装 Tableau 也能看。用的是同一份数据、同一套口径，外观套用 [dayring 设计套件](https://github.com/wannian001/dayring/blob/main/docs/DESIGN_KIT.md)（1.2.0），有中英文，深浅色跟随系统，手机和电脑都能用。
+
+![网页版：浅色模式，热点视图和“所选区域 vs 全州”](screenshots/web_light_en.png)
+
+<p>
+  <img src="screenshots/web_dark_zh.png" width="68%" alt="网页版：深色模式，中文">
+  <img src="screenshots/web_phone_zh.png" width="28%" alt="网页版：手机宽度">
+</p>
+
+- 功能和看板一样：热点、单起事故、行人流量三种视图；年份、严重程度、时段、行人年龄四个筛选器；点选或框选一块区域，和全州比五类条件。对比面板每类条件可以展开，看全部取值。
+- 数字和看板逐项一致。`tools/build_web_data.py` 从课程原始数据生成 `web/data/`，每次都拿看板上的数字核对（总数、默认样本 n=120、五类对比、全州概况、五个时段的事故数），对不上就报错。六边形用的是当初逐条复现的 Tableau HEXBIN 算法，每个格子里的事故和看板一样。
+- 浅色模式用提交后定的浅色配色（越多越深），深色模式在深色底图上反过来（越多越亮）。两套色带和“高于 / 低于全州”两种颜色都用色板校验脚本查过。
+- 底图是 OpenFreeMap（免费，不需要密钥），地图引擎是 MapLibre GL。
+
+本地预览：
+
+```bash
+python3 -m http.server 8797 --directory web
+```
+
+然后打开 <http://localhost:8797>。重新生成数据：`python3 tools/build_web_data.py <课程数据目录>`；测试：`node tests/model.test.mjs`。
+
+## 怎么打开 Tableau 文件
 
 用 Tableau Desktop 或免费的 Tableau Public 打开。文件用 Tableau 2026.2 保存，旧版本可能打不开。数据已经打包在文件里，不用另外下载。仓库里有两个文件：
 
@@ -61,7 +85,7 @@
 
 > Student: concept, design, planning, review and submission. AI (OpenAI Codex, Anthropic Claude, OpenAI ChatGPT): calculations, workbook edits, QA.
 
-选题、设计、规划、检查和提交由我完成。Tableau 计算字段、工作簿修改和 QA 由 AI 编码助手完成。提交后的浅色版由 Claude Code 按我的要求改色、渲染和检查。
+选题、设计、规划、检查和提交由我完成。Tableau 计算字段、工作簿修改和 QA 由 AI 编码助手完成。提交后的浅色版和网页版由 Claude Code 按我的要求制作、渲染和检查，数字核对由脚本完成，我做了验收。
 
 ## 使用限制
 
@@ -73,7 +97,7 @@
 
 A solo assignment for GEOM90007 Information Visualisation at the University of Melbourne, built in Tableau in August 2026. Mark: 84.3/100 (class mean 70.0).
 
-In October 2026 a light version was added next to the submitted file. Only the map colours changed; see [Recoloured after submission](#recoloured-after-submission).
+In October 2026 a light version was added next to the submitted file (only the map colours changed; see [Recoloured after submission](#recoloured-after-submission)), plus a [web version](#web-version) that opens without Tableau.
 
 ### The problem
 
@@ -92,7 +116,18 @@ The brief's audience is Transport Victoria, which investigates pedestrian crashe
 - 84.3/100, class mean 70.0 (291 students).
 - Findings you can read straight off the dashboard: pedestrians aged 65+ are 20.4% of all crashes but 41.8% of fatal ones, and 15:00–18:00 has the most crashes.
 
-### Opening it
+### Web version
+
+`web/` holds a web version of the dashboard that opens without Tableau. It uses the same data and the same rules, wears the [dayring design kit](https://github.com/wannian001/dayring/blob/main/docs/DESIGN_KIT.md) (1.2.0), speaks English and Chinese, follows the system's light or dark mode, and works on phones and laptops (screenshots above).
+
+- Same features as the dashboard: hotspots, single crashes and footfall views; year, severity, time-of-day and pedestrian-age filters; click or box-select an area to compare five conditions with Victoria. Each factor opens to show every condition.
+- Same numbers. `tools/build_web_data.py` builds `web/data/` from the course data and checks it against the figures on the dashboard (totals, the default sample of 120, the five comparisons, the overview, the five time bands); any mismatch stops the build. Hexes use the exact reproduction of Tableau's HEXBIN made during the assignment, so every bin holds the same crashes.
+- Light mode uses the light palette (more crashes = darker); dark mode flips it on a dark basemap (more = lighter). Both ramps and the higher / lower colours were checked with a palette validator.
+- Basemap: OpenFreeMap (free, no key) drawn with MapLibre GL.
+
+To preview locally, run `python3 -m http.server 8797 --directory web` and open <http://localhost:8797>. Rebuild the data with `python3 tools/build_web_data.py <course data folder>`; run the tests with `node tests/model.test.mjs`.
+
+### Opening the Tableau files
 
 Open either file in Tableau Desktop or the free Tableau Public app. Both were saved with Tableau 2026.2, so older versions may not open them. The data is packaged inside each file.
 
@@ -122,7 +157,7 @@ Known issue in both versions: after you click the CRASHES or FOOTFALL button, th
 
 ### AI use
 
-Quoted from the dashboard footer: "Student: concept, design, planning, review and submission. AI (OpenAI Codex, Anthropic Claude, OpenAI ChatGPT): calculations, workbook edits, QA." The light version was recoloured, rendered and checked by Claude Code at my request.
+Quoted from the dashboard footer: "Student: concept, design, planning, review and submission. AI (OpenAI Codex, Anthropic Claude, OpenAI ChatGPT): calculations, workbook edits, QA." The light version and the web version were built, rendered and checked by Claude Code at my request; scripts check the numbers and I reviewed the result.
 
 ### Use
 
