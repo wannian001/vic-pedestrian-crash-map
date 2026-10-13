@@ -2,9 +2,11 @@
 
 墨尔本大学 GEOM90007 信息可视化课程的个人作业，2026 年 8 月用 Tableau 完成。得分 84.3/100，班均 70.0。
 
+2026 年 10 月在提交版之外加了一份浅色版，只改了地图配色，见[提交后的改色](#提交后的改色)。
+
 [English below](#english)
 
-![看板默认视图：六边形热点地图、筛选器和“所选区域 vs 全州”对比面板](screenshots/dashboard_default.png)
+![浅色版看板默认视图：浅色底图上的六边形热点地图、筛选器和“所选区域 vs 全州”对比面板](screenshots/dashboard_light.png)
 
 ## 这个看板解决什么问题
 
@@ -25,9 +27,27 @@
 
 ## 怎么打开
 
-用 Tableau Desktop 或免费的 Tableau Public 打开 `GEOM90007_A1_Pedestrian_Crash_Map_JiakuoTang.twbx`。文件用 Tableau 2026.2 保存，旧版本可能打不开。数据已经打包在文件里，不用另外下载。
+用 Tableau Desktop 或免费的 Tableau Public 打开。文件用 Tableau 2026.2 保存，旧版本可能打不开。数据已经打包在文件里，不用另外下载。仓库里有两个文件：
 
-这个文件就是交到 Canvas 的那一份，没有改过，SHA-256 是 `0afe789fa1d97492370d06963cb0fc4103eb74d1d389af0659d5d9292635e8a6`。截图也是用这个文件渲染的。
+| 文件 | 是什么 | SHA-256 |
+|---|---|---|
+| `GEOM90007_A1_Pedestrian_Crash_Map_JiakuoTang.twbx` | 交到 Canvas 的那一份，没有改过（深色底图，[截图](screenshots/dashboard_default.png)） | `0afe789fa1d97492370d06963cb0fc4103eb74d1d389af0659d5d9292635e8a6` |
+| `GEOM90007_A1_Pedestrian_Crash_Map_JiakuoTang_light.twbx` | 提交后的浅色版，只改了配色（上面的截图） | `817ac0f5f8419e1c85f36b638e964f9b7bfd4540925e1c4691ecede5f3f3e3a8` |
+
+两张截图分别用对应的文件在 Tableau 里导出。
+
+## 提交后的改色
+
+提交版用的是 Tableau 的深色底图，六边形用 magma 色带，事故越多颜色越亮。整张地图偏暗。而在浅色背景上，顺序数据的通行画法是越多越深，课程讲 ColorBrewer 和视觉层级时用的也是这个规则。2026-10-13 在提交版的基础上做了浅色版：
+
+- 底图从深色换成浅色。
+- 六边形改成橙到深红的单色相色带：1 起 `#e18f4b`，100+ 起 `#871823`，越多越深。六档亮度依次递减，相邻两档拉开了差距；最浅一档对底图（`#e8e8e8`）的对比度在 2:1 以上，浅底上也看得见。
+- 地图上的两个图例框改成白底深字，色块和新色带一致。
+- CRASHES 视图里的单起事故点从白色改成深红（75% 不透明），否则在浅底图上看不见；FOOTFALL 视图的传感器圆点从浅灰改成中灰。
+
+数据、计算字段、筛选器、交互和版面都没动。浅色版由 `tools/make_light_version.py` 从提交版直接生成，脚本里写明了每一处改动。
+
+已知问题（两个版本都有）：在看板上点 CRASHES 或 FOOTFALL 按钮后，按钮文字会从蓝色变成橙色。这是 Tableau 给按钮状态自动分配颜色造成的，不影响切换功能。
 
 ## 数据来源
 
@@ -41,7 +61,7 @@
 
 > Student: concept, design, planning, review and submission. AI (OpenAI Codex, Anthropic Claude, OpenAI ChatGPT): calculations, workbook edits, QA.
 
-选题、设计、规划、检查和提交由我完成。Tableau 计算字段、工作簿修改和 QA 由 AI 编码助手完成。
+选题、设计、规划、检查和提交由我完成。Tableau 计算字段、工作簿修改和 QA 由 AI 编码助手完成。提交后的浅色版由 Claude Code 按我的要求改色、渲染和检查。
 
 ## 使用限制
 
@@ -52,6 +72,8 @@
 ## English
 
 A solo assignment for GEOM90007 Information Visualisation at the University of Melbourne, built in Tableau in August 2026. Mark: 84.3/100 (class mean 70.0).
+
+In October 2026 a light version was added next to the submitted file. Only the map colours changed; see [Recoloured after submission](#recoloured-after-submission).
 
 ### The problem
 
@@ -72,9 +94,25 @@ The brief's audience is Transport Victoria, which investigates pedestrian crashe
 
 ### Opening it
 
-Open `GEOM90007_A1_Pedestrian_Crash_Map_JiakuoTang.twbx` in Tableau Desktop or the free Tableau Public app. It was saved with Tableau 2026.2, so older versions may not open it. The data is packaged inside the file.
+Open either file in Tableau Desktop or the free Tableau Public app. Both were saved with Tableau 2026.2, so older versions may not open them. The data is packaged inside each file.
 
-This is the exact file submitted on Canvas (SHA-256 above). The screenshot was rendered from it.
+- `GEOM90007_A1_Pedestrian_Crash_Map_JiakuoTang.twbx` is the exact file submitted on Canvas, unchanged (dark basemap, [screenshot](screenshots/dashboard_default.png); SHA-256 in the table above).
+- `GEOM90007_A1_Pedestrian_Crash_Map_JiakuoTang_light.twbx` is the light version made after submission (the screenshot at the top).
+
+Each screenshot was exported from its own file in Tableau.
+
+### Recoloured after submission
+
+The submitted version uses Tableau's dark basemap and a magma ramp in which more crashes means a brighter hex, so the map reads as heavy and dark. On a light background the usual rule for ordered data is the opposite: more means darker. The course's ColorBrewer and visual-hierarchy material uses the same rule. On 13 October 2026 a light version was made from the submitted file:
+
+- The basemap changed from dark to light.
+- The hexes use a single-hue orange-to-dark-red ramp, from `#e18f4b` for 1 crash to `#871823` for 100+. Lightness falls step by step with a visible gap between neighbours, and the lightest step keeps at least 2:1 contrast against the basemap (`#e8e8e8`).
+- The two legend boxes on the map are now white with dark text, and their swatches match the new ramp.
+- Individual crashes in the CRASHES view changed from white to dark red at 75% opacity, since white dots disappear on a light basemap. Sensor circles in the FOOTFALL view changed from light grey to mid grey.
+
+Data, calculated fields, filters, interactions and layout are unchanged. `tools/make_light_version.py` builds the light file directly from the submitted one and lists every edit.
+
+Known issue in both versions: after you click the CRASHES or FOOTFALL button, the button text turns from blue to orange. Tableau assigns the button-state colours automatically. Switching views still works.
 
 ### Data
 
@@ -84,7 +122,7 @@ This is the exact file submitted on Canvas (SHA-256 above). The screenshot was r
 
 ### AI use
 
-Quoted from the dashboard footer: "Student: concept, design, planning, review and submission. AI (OpenAI Codex, Anthropic Claude, OpenAI ChatGPT): calculations, workbook edits, QA."
+Quoted from the dashboard footer: "Student: concept, design, planning, review and submission. AI (OpenAI Codex, Anthropic Claude, OpenAI ChatGPT): calculations, workbook edits, QA." The light version was recoloured, rendered and checked by Claude Code at my request.
 
 ### Use
 
