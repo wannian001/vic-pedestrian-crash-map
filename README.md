@@ -36,7 +36,7 @@ The brief's audience is Transport Victoria, which investigates pedestrian crashe
 
 ### Web version
 
-**[Open it](https://wannian001.github.io/vic-pedestrian-crash-map/)**. `web/` rebuilds the dashboard as a web page with the same data and the same rules. It wears the [dayring design kit](https://github.com/wannian001/dayring/blob/main/docs/DESIGN_KIT.md) (1.2.0): the title and summary are in both languages, the rest follows the 中文 / EN button (first visit: your browser's language), light or dark follows your system, and it works on phones and laptops.
+**[Open it](https://wannian001.github.io/vic-pedestrian-crash-map/)**. `web/` rebuilds the dashboard as a web page with the same data and the same rules. It wears the [Proactive Health AIO design kit](https://github.com/wannian001/proactive-health-aio/blob/main/docs/DESIGN_KIT.md) (1.2.0, from when the project was called dayring): the title and summary are in both languages, the rest follows the 中文 / EN button (first visit: your browser's language), light or dark follows your system, and it works on phones and laptops.
 
 <p>
   <img src="screenshots/web_dark_zh.png" width="68%" alt="Web version, dark mode, in Chinese">
@@ -117,7 +117,7 @@ Shared as a portfolio piece. There is no open licence; please don't reuse it for
 
 ### 网页版
 
-**[打开在线演示](https://wannian001.github.io/vic-pedestrian-crash-map/)**。`web/` 用同一份数据、同一套口径，把看板做成了网页。外观套用 [dayring 设计套件](https://github.com/wannian001/dayring/blob/main/docs/DESIGN_KIT.md)（1.2.0）：标题和简介中英两行都有，其余内容随「中文 / EN」按钮切换（第一次打开按浏览器语言），深浅色跟随系统，手机和电脑都能用。
+**[打开在线演示](https://wannian001.github.io/vic-pedestrian-crash-map/)**。`web/` 用同一份数据、同一套口径，把看板做成了网页。外观套用 [主动健康管理 AIO 的设计套件](https://github.com/wannian001/proactive-health-aio/blob/main/docs/DESIGN_KIT.md)（1.2.0，那时项目还叫 dayring）：标题和简介中英两行都有，其余内容随「中文 / EN」按钮切换（第一次打开按浏览器语言），深浅色跟随系统，手机和电脑都能用。
 
 - 功能和看板一样：热点、单起事故、行人流量三种视图；年份、严重程度、时段、行人年龄四个筛选器；点选或框选一块区域，和全州比五类条件。对比面板每类条件可以展开，看全部取值。
 - 数字和看板逐项一致。`tools/build_web_data.py` 从课程原始数据生成 `web/data/`，每次都拿看板上的数字核对（总数、默认样本 n=120、五类对比、全州概况、五个时段的事故数），对不上就报错。六边形用的是当初逐条复现的 Tableau HEXBIN 算法，每个格子里的事故和看板一样。
