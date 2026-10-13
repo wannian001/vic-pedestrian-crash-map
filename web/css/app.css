@@ -32,11 +32,33 @@
 .side .brand span { font-weight: 700; letter-spacing: -.01em; }
 .side .brand svg { width: 28px; height: 28px; flex: none; }
 
+/* between phone and laptop widths (a half-screen window, a tablet) the kit would move the menu to a bottom tab bar;
+   here it stays on the left as a narrow column, each page an icon with its name under it. Phones keep the tab bar. */
+@media (min-width: 641px) and (max-width: 899px) {
+  body:has(> .side) { padding-left: 76px; padding-bottom: 0; }
+  body > .side {
+    position: fixed; top: 0; bottom: 0; left: 0; z-index: 20; width: 76px; overflow-y: auto; overscroll-behavior: contain;
+    flex-direction: column; align-items: center; justify-content: flex-start; gap: var(--s-4);
+    padding: var(--s-5) var(--s-1) 14px; background: var(--surface); border-right: 1px solid var(--line); border-bottom: 0;
+  }
+  body > .side .brand span { display: none; }
+  body > .side .side-nav {
+    position: static; display: flex; flex-direction: column; gap: var(--s-1); width: 100%; padding: 0;
+    background: none; border-top: 0; backdrop-filter: none; -webkit-backdrop-filter: none;
+  }
+  body > .side .side-nav a { flex-direction: column; justify-content: center; gap: 3px; min-height: 56px; padding: var(--s-1) 2px;
+    font-size: 10.5px; font-weight: 600; white-space: normal; text-align: center; line-height: 1.2; }
+  body > .side .side-nav a svg { width: 20px; height: 20px; }
+  body > .side .side-nav a[aria-current="page"] { background: var(--accent-soft); }
+  body > .side .side-tools { margin-top: auto; flex-direction: column; flex-wrap: nowrap; padding: 6px 0; }
+  body > .side .demo-badge { writing-mode: vertical-rl; padding: var(--s-2) 3px; }
+}
+
 /* ---- the head: both names on one line, three lines for a first-time reader, then the data line ---- */
 .head { margin-bottom: var(--s-4); }
 .head h1 .h1-alt { margin-left: var(--s-2); font-size: var(--t-lg); font-weight: 600; color: var(--ink-2); letter-spacing: 0; }
 @media (min-width: 900px) { .head h1 .h1-alt { white-space: nowrap; } }
-@media (max-width: 640px) { .head h1 .h1-alt { display: block; margin: var(--s-1) 0 0; font-size: var(--t-md); } }
+@media (max-width: 899px) { .head h1 .h1-alt { display: block; margin: var(--s-1) 0 0; font-size: var(--t-md); } }
 .head .brief { margin: var(--s-2) 0; display: grid; grid-template-columns: max-content minmax(0, 1fr); column-gap: var(--s-3); row-gap: 5px; max-width: 128ch; font-size: var(--t-sm); line-height: 1.55; }
 .brief-row { display: contents; }
 .brief-row dt { font-weight: 700; color: var(--ink); white-space: nowrap; }
