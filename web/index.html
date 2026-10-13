@@ -8,15 +8,16 @@
   <title>维州行人事故热点地图 · Pedestrian crash hotspots in Victoria</title>
   <link rel="icon" href="icon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/maplibre-gl/4.7.1/maplibre-gl.min.css">
-  <!-- the Proactive Health AIO design kit (tokens, components; exported when it was called dayring), then this page's own rules -->
+  <!-- the Proactive Health AIO design kit (formerly dayring; the copy in kit/ is the 1.3.0 export, as in Ready to Train?), then this page's own rules -->
   <link rel="stylesheet" href="kit/css/tokens.css">
   <link rel="stylesheet" href="kit/css/kit.css">
   <link rel="stylesheet" href="css/app.css">
   <script>
-    // apply a saved light/dark choice before first paint so the page does not flash
+    // apply a saved light/dark choice and the folded menu before first paint so the page does not flash
     try {
       var m = new URLSearchParams(location.search).get("mode") || localStorage.getItem("crashmap.mode");
       if (m === "light" || m === "dark") document.documentElement.dataset.mode = m;
+      if (localStorage.getItem("crashmap.side") === "folded") document.documentElement.classList.add("side-folded");
     } catch (e) {}
     // if a script could not be loaded (a dropped connection), say so instead of loading forever
     function crashmapFailed() {
@@ -31,6 +32,7 @@
   <script type="module" src="js/app.js" onerror="crashmapFailed()"></script>
 </head>
 <body>
+  <aside class="side"></aside>
   <main aria-live="polite"><p class="muted">Loading…</p></main>
 </body>
 </html>

@@ -1,4 +1,5 @@
-/* The crash map's own rules on top of the Proactive Health AIO kit (kit/css; exported when it was called dayring). Data colours were checked with the dataviz
+/* The crash map's own rules on top of the Proactive Health AIO kit (kit/css, the 1.3.0 export from when it was called dayring).
+   The shell (menu, head, About dialog) follows the Ready to Train? web version. Data colours were checked with the dataviz
    validator: the hex ramp is one hue, lighter to darker on the light map (more crashes = darker) and the other way
    round on the dark map, each step clearly apart and the faintest step at least 2:1 against its basemap; the two
    "higher / lower than Victoria" colours pass the colour-vision checks in both modes. */
@@ -27,10 +28,112 @@
   --diff-down: #927fe7;
 }
 
-/* ---- the page head: title and summary in both languages ---- */
-.head .h1-alt { margin: var(--s-1) 0 var(--s-2); font-size: var(--t-lg); font-weight: 600; color: var(--ink-2); letter-spacing: -.005em; }
-.head .sub + .sub { margin-top: 2px; }
-@media (max-width: 640px) { .head .h1-alt { font-size: var(--t-md); } }
+/* ---- the menu (kit .side): the logo a little larger, as in Ready to Train? ---- */
+.side .brand span { font-weight: 700; letter-spacing: -.01em; }
+.side .brand svg { width: 28px; height: 28px; flex: none; }
+
+/* ---- the head: both names on one line, three lines for a first-time reader, then the data line ---- */
+.head { margin-bottom: var(--s-4); }
+.head h1 .h1-alt { margin-left: var(--s-2); font-size: var(--t-lg); font-weight: 600; color: var(--ink-2); letter-spacing: 0; }
+@media (min-width: 900px) { .head h1 .h1-alt { white-space: nowrap; } }
+@media (max-width: 640px) { .head h1 .h1-alt { display: block; margin: var(--s-1) 0 0; font-size: var(--t-md); } }
+.head .brief { margin: var(--s-2) 0; display: grid; grid-template-columns: max-content minmax(0, 1fr); column-gap: var(--s-3); row-gap: 5px; max-width: 128ch; font-size: var(--t-sm); line-height: 1.55; }
+.brief-row { display: contents; }
+.brief-row dt { font-weight: 700; color: var(--ink); white-space: nowrap; }
+.brief-row dd { margin: 0; color: var(--ink-2); }
+@media (max-width: 640px) { .head .brief { grid-template-columns: 1fr; row-gap: 2px; } .brief-row dd { margin-bottom: var(--s-2); } }
+.head .data-line { margin: var(--s-1) 0 0; display: flex; flex-wrap: wrap; align-items: center; gap: var(--s-1) var(--s-4); font-size: var(--t-xs); color: var(--ink-3); }
+.solves-link { display: inline-flex; align-items: center; gap: 5px; font-weight: 650; }
+.link-button { display: inline-flex; align-items: center; gap: 5px; padding: 0; border: 0; background: none; color: var(--accent); font-size: var(--t-xs); font-weight: 600; cursor: pointer; }
+.link-button:hover { text-decoration: underline; text-underline-offset: 3px; }
+.solves-link .metric-icon, .link-button .metric-icon { width: 15px; height: 15px; flex: none; }
+
+/* ---- a numbered step marker (the tip bar, the guide, the project cards) ---- */
+.step-n { display: inline-grid; place-items: center; flex: none; width: 22px; height: 22px; border-radius: 50%; background: var(--accent-soft); color: var(--accent); font-size: 12px; font-weight: 700; line-height: 1; }
+
+/* ---- the three-step tip above the map; "Got it" hides it for good, the menu keeps the full guide ---- */
+.tips { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s-2) var(--s-3); margin: 0 0 var(--s-4); padding: var(--s-3) var(--s-4);
+  border: 1px dashed var(--line-2); border-radius: var(--r-lg); background: var(--surface); font-size: var(--t-sm); }
+.tips[hidden] { display: none; }
+.tips > .metric-icon { flex: none; width: 20px; height: 20px; color: var(--accent); }
+.tips-lead { font-weight: 700; }
+.tips-steps { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: var(--s-1) var(--s-4); flex: 1 1 520px; min-width: 0; counter-reset: tip; }
+.tips-steps li { counter-increment: tip; display: inline-flex; align-items: center; gap: 6px; color: var(--ink-2); }
+.tips-steps li::before { content: counter(tip); display: inline-grid; place-items: center; flex: none; width: 20px; height: 20px; border-radius: 50%;
+  background: var(--accent-soft); color: var(--accent); font-size: 11.5px; font-weight: 700; }
+.tips-end { display: inline-flex; align-items: center; gap: var(--s-3); margin-left: auto; white-space: nowrap; }
+.tips-end a { font-weight: 600; }
+
+/* ---- a page's title block and the heading of a later part ---- */
+.page-intro { margin: var(--s-2) 0 var(--s-4); }
+.page-intro h2 { margin: 0; font-size: var(--t-xl); font-weight: 700; letter-spacing: -.015em; }
+.page-intro p { margin: var(--s-1) 0 0; color: var(--ink-2); font-size: var(--t-sm); max-width: 82ch; }
+.page-lede { margin: 0 0 var(--s-4); color: var(--ink-2); font-size: var(--t-sm); max-width: 82ch; }
+.section-head { margin: var(--s-6) 0 var(--s-1); padding-top: var(--s-4); border-top: 1px solid var(--line); font-size: var(--t-xl); font-weight: 700; letter-spacing: -.015em; }
+
+/* ---- How to use: five steps and a note in two columns, each with what it looks like on the map page ---- */
+.guide-steps { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--s-4); align-items: start; }
+@media (max-width: 1080px) { .guide-steps { grid-template-columns: 1fr; } }
+.guide-step { margin: 0; display: flex; flex-direction: column; gap: var(--s-3); min-width: 0; }
+.guide-step h3, .brief-card h3, .ai-note h3 { margin: 0; display: flex; align-items: center; gap: var(--s-2); font-size: var(--t-md); font-weight: 680; }
+.guide-step ul, .brief-card ul { margin: 0; padding-left: 1.1em; display: grid; gap: var(--s-2); font-size: var(--t-sm); line-height: 1.6; color: var(--ink); }
+.guide-step li::marker, .brief-card li::marker { color: var(--ink-3); }
+.guide-step.care .step-n { background: var(--watch-soft); color: var(--watch-ink); }
+.guide-key { padding: var(--s-3); border-radius: var(--r-md); background: var(--surface-2); gap: var(--s-2) var(--s-3); }
+.guide-key .tool { cursor: default; pointer-events: none; background: var(--surface); }
+.seg.demo > span { padding: var(--s-1) var(--s-3); border-radius: var(--r-pill); font-size: var(--t-xs); font-weight: 600; color: var(--ink-2); }
+.seg.demo > span.on { background: var(--seg-on); color: var(--ink); box-shadow: var(--seg-on-edge); }
+.cmp-demos { display: flex; flex-direction: column; }
+.cmp-demo { display: grid; align-items: center; gap: 2px var(--s-3); padding: 6px 0;
+  grid-template-columns: minmax(0, 1fr) auto; grid-template-areas: "factor vals" "cond d" "bar bar"; }
+.cmp-demo + .cmp-demo { border-top: 1px solid var(--line); }
+.cmp-demo > .dbar { grid-area: bar; margin-top: 4px; }
+.cmp-demo .cmp-factor::before { content: none; }
+
+.try-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--s-4); }
+@media (max-width: 1280px) { .try-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 640px) { .try-grid { grid-template-columns: 1fr; } }
+.try-card { margin: 0; display: flex; flex-direction: column; gap: var(--s-2); min-width: 0; }
+.try-q { margin: 0; font-size: var(--t-sm); font-weight: 650; line-height: 1.5; }
+.try-how { margin: 0 0 var(--s-1); font-size: var(--t-xs); color: var(--ink-3); }
+.try-card .btn { margin-top: auto; align-self: flex-start; }
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 6px; min-height: 34px; padding: 0 var(--s-4); border-radius: var(--r-pill);
+  border: 1px solid transparent; font-size: var(--t-sm); font-weight: 600; cursor: pointer; white-space: nowrap; }
+.btn.soft { background: var(--accent-soft); color: var(--accent); }
+.btn.soft:hover { filter: brightness(.97); }
+
+/* ---- The project: three cards (the assignment, the problem, what came out), then the Tableau dashboard ---- */
+.brief-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--s-4); align-items: stretch; margin-bottom: var(--s-3); }
+@media (max-width: 1180px) { .brief-grid { grid-template-columns: 1fr; } }
+.brief-card { margin: 0; display: flex; flex-direction: column; gap: var(--s-3); min-width: 0; }
+.brief-try { margin: auto 0 0; display: flex; flex-wrap: wrap; gap: var(--s-1) var(--s-3); align-items: baseline; font-size: var(--t-sm); }
+.brief-try span { color: var(--ink-3); }
+.brief-try a { font-weight: 600; }
+.shots { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--s-4); }
+@media (max-width: 900px) { .shots { grid-template-columns: 1fr; } }
+.shot { margin: 0; min-width: 0; }
+.shot img { display: block; width: 100%; height: auto; border-radius: var(--r-md); border: 1px solid var(--line); background: var(--surface-2); }
+.shot figcaption { margin-top: var(--s-2); font-size: var(--t-xs); color: var(--ink-2); }
+.ai-note { margin-top: var(--s-5); display: flex; flex-direction: column; gap: var(--s-2); }
+.ai-note p { margin: 0; font-size: var(--t-sm); color: var(--ink-2); line-height: 1.6; max-width: 110ch; }
+
+/* ---- About the data & methods (the dialog of Ready to Train?) ---- */
+dialog.about { width: min(780px, calc(100vw - 24px)); max-height: calc(100vh - 48px); padding: 0; border: 1px solid var(--line); border-radius: var(--r-lg);
+  background: var(--surface); color: var(--ink); box-shadow: 0 24px 60px rgba(0, 0, 0, .25); }
+dialog.about::backdrop { background: rgba(10, 12, 18, .45); }
+.about-in { padding: var(--s-5) var(--s-6) var(--s-6); font-size: var(--t-sm); line-height: 1.6; }
+.about-head { display: flex; align-items: center; justify-content: space-between; gap: var(--s-3); margin-bottom: var(--s-2); }
+.about-head h2 { margin: 0; font-size: var(--t-xl); }
+.about-in h3 { margin: var(--s-5) 0 var(--s-2); font-size: var(--t-md); }
+.about-in p, .about-in li { color: var(--ink-2); }
+.about-in ul { padding-left: 1.2em; display: grid; gap: var(--s-2); }
+@media (max-width: 640px) { .about-in { padding: var(--s-4); } }
+
+.foot { flex-direction: column; gap: var(--s-1); padding-top: var(--s-4); border-top: 1px solid var(--line); }
+
+/* ---- the map beside a fixed column for the filters and the comparison, so the menu takes its width from the map ---- */
+.map-row { display: grid; grid-template-columns: minmax(0, 1fr) minmax(340px, 380px); gap: var(--s-4); align-items: stretch; margin-bottom: var(--s-4); }
+@media (max-width: 1080px) { .map-row { grid-template-columns: minmax(0, 1fr); } }
 
 /* ---- the map card ---- */
 .map-card { padding: 0; overflow: hidden; display: flex; flex-direction: column; }
@@ -74,14 +177,16 @@
 .tip.map-tip { white-space: pre-line; max-width: 300px; }
 
 /* ---- filters ---- */
-.filters { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--s-3); }
-.filter { display: grid; grid-template-columns: 112px minmax(0, 1fr); align-items: center; gap: var(--s-3); font-size: var(--t-sm); color: var(--ink-2); }
+/* one grid for all four rows: the label column is as wide as the longest label, so the age switch stays on one line */
+.filters { display: grid; grid-template-columns: max-content minmax(0, 1fr); align-items: center; gap: var(--s-3) var(--s-4); font-size: var(--t-sm); color: var(--ink-2); }
+.filter { display: contents; }
 .filter select {
   font: inherit; color: var(--ink); background: var(--surface-2); border: 1px solid var(--line-2); border-radius: var(--r-sm);
   height: 32px; padding: 0 var(--s-2); min-width: 0; width: 100%;
 }
 .filter .seg { justify-self: start; flex-wrap: wrap; }
-@media (max-width: 360px) { .filter { grid-template-columns: minmax(0, 1fr); gap: var(--s-1); } }
+.filter .seg button { padding-left: 10px; padding-right: 10px; }
+@media (max-width: 360px) { .filters { grid-template-columns: minmax(0, 1fr); gap: var(--s-1); } }
 
 /* ---- selection vs Victoria ---- */
 .cmp-status { margin: 0 0 var(--s-2); }
@@ -113,11 +218,11 @@ details.cmp summary > .dbar { grid-area: bar; margin-top: 4px; }
 .cmp-table td.gap .dbar { display: inline-block; vertical-align: middle; width: calc(100% - 46px); }
 .cmp-table td.gap .num { display: inline-block; width: 42px; text-align: right; }
 
-/* ---- overview and about ---- */
+/* ---- overview and limits ---- */
 .facts.overview { margin-top: 0; }
 .facts.overview div { align-items: baseline; }
 .facts.overview dt { flex: none; width: 92px; }
 .facts.overview dd { font-weight: 500; text-align: left; flex: 1; }
-.about-p { margin: 0 0 var(--s-3); color: var(--ink-2); line-height: 1.55; }
 .limits { margin: var(--s-2) 0 0; padding-left: 1.2em; color: var(--ink-2); line-height: 1.55; }
 .limits li { margin: 2px 0; }
+.lim-more { margin: var(--s-3) 0 0; }

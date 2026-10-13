@@ -36,19 +36,26 @@ The brief's audience is Transport Victoria, which investigates pedestrian crashe
 
 ### Web version
 
-**[Open it](https://wannian001.github.io/vic-pedestrian-crash-map/)**. `web/` rebuilds the dashboard as a web page with the same data and the same rules. It wears the [Proactive Health AIO design kit](https://github.com/wannian001/proactive-health-aio/blob/main/docs/DESIGN_KIT.md) (1.2.0, from when the project was called dayring): the title and summary are in both languages, the rest follows the 中文 / EN button (first visit: your browser's language), light or dark follows your system, and it works on phones and laptops.
+**[Open it](https://wannian001.github.io/vic-pedestrian-crash-map/)**. `web/` rebuilds the dashboard as a web page with the same data and the same rules. It uses the layout of the [Ready to Train?](https://wannian001.github.io/ready-to-train-dashboard/) web version and the [Proactive Health AIO design kit](https://github.com/wannian001/proactive-health-aio/blob/main/docs/DESIGN_KIT.md) (1.3.0, exported when the project was called dayring):
+
+- A menu on the left with three pages: **Map** (the dashboard), **How to use** and **The project** (the assignment, the problem chosen, what came out, and the Tableau dashboard as submitted). The menu folds to an icon rail; on phones it becomes a tab bar at the bottom.
+- The language (中文 / EN) and light / dark buttons sit at the foot of the menu. The first visit follows your browser's language and your system's light or dark setting.
+- The page head gives both names on one line, then the question, the finding and my part in three lines, so a first-time reader knows what they are looking at.
+- **How to use** walks through five steps, each shown with the map page's own pieces, plus four one-click examples that set the filters and open the map. A three-step tip sits above the map until you click "Got it". The data and methods are in a dialog opened from the head.
 
 <p>
   <img src="screenshots/web_dark_zh.png" width="68%" alt="Web version, dark mode, in Chinese">
   <img src="screenshots/web_phone_zh.png" width="28%" alt="Web version at phone width">
 </p>
 
+![The How to use page, in Chinese](screenshots/web_guide_zh.png)
+
 - Same features as the dashboard: hotspots, single crashes and footfall views; year, severity, time-of-day and pedestrian-age filters; click or box-select an area to compare five conditions with Victoria. Each factor opens to show every condition.
 - Same numbers. `tools/build_web_data.py` builds `web/data/` from the course data and checks it against the figures on the dashboard (totals, the default sample of 120, the five comparisons, the overview, the five time bands); any mismatch stops the build. Hexes use the exact reproduction of Tableau's HEXBIN made during the assignment, so every bin holds the same crashes.
 - Light mode uses the light palette (more crashes = darker); dark mode flips it on a dark basemap (more = lighter). Both ramps and the higher / lower colours were checked with a palette validator.
 - Basemap: OpenFreeMap (free, no key) drawn with MapLibre GL.
 
-To preview locally, run `python3 -m http.server 8797 --directory web` and open <http://localhost:8797>. Rebuild the data with `python3 tools/build_web_data.py <course data folder>`; run the tests with `node tests/model.test.mjs`.
+To preview locally, run `python3 -m http.server 8797 --directory web` and open <http://localhost:8797>. Rebuild the data with `python3 tools/build_web_data.py <course data folder>`; run the tests with `node tests/model.test.mjs` (the numbers) and `node tests/words.test.mjs` (both languages carry the same words).
 
 ### Opening the Tableau files
 
@@ -117,14 +124,21 @@ Shared as a portfolio piece. There is no open licence; please don't reuse it for
 
 ### 网页版
 
-**[打开在线演示](https://wannian001.github.io/vic-pedestrian-crash-map/)**。`web/` 用同一份数据、同一套口径，把看板做成了网页。外观套用 [主动健康管理 AIO 的设计套件](https://github.com/wannian001/proactive-health-aio/blob/main/docs/DESIGN_KIT.md)（1.2.0，那时项目还叫 dayring）：标题和简介中英两行都有，其余内容随「中文 / EN」按钮切换（第一次打开按浏览器语言），深浅色跟随系统，手机和电脑都能用。
+**[打开在线演示](https://wannian001.github.io/vic-pedestrian-crash-map/)**。`web/` 用同一份数据、同一套口径，把看板做成了网页。版面和 [Ready to Train? 网页版](https://wannian001.github.io/ready-to-train-dashboard/) 一致，外观套用 [主动健康管理 AIO 的设计套件](https://github.com/wannian001/proactive-health-aio/blob/main/docs/DESIGN_KIT.md)（1.3.0，导出时项目还叫 dayring）。
+
+- 左边是菜单，有三页：**地图**（看板本身）、**使用说明**、**项目说明**（老师布置的作业、我选的问题、做出了什么，以及交上去的 Tableau 看板）。菜单可以收成一列图标；在手机上变成底部的标签栏。
+- 中英切换（中文 / EN）和浅色 / 深色按钮放在菜单底部。第一次打开按浏览器语言和系统深浅色显示。
+- 页头一行写中英两个名字，下面三行写想回答的问题、发现和我做的部分，第一次来的人能马上知道这是什么。
+- **使用说明**分五步讲怎么用，每步配上地图页里对应的按钮和图例；另有四个一键示例，点一下就设好筛选并打开地图。地图上方有一条三步提示，点“知道了”后不再出现。数据和算法放在页头“关于数据和方法”的弹窗里。
+
+![使用说明页](screenshots/web_guide_zh.png)
 
 - 功能和看板一样：热点、单起事故、行人流量三种视图；年份、严重程度、时段、行人年龄四个筛选器；点选或框选一块区域，和全州比五类条件。对比面板每类条件可以展开，看全部取值。
 - 数字和看板逐项一致。`tools/build_web_data.py` 从课程原始数据生成 `web/data/`，每次都拿看板上的数字核对（总数、默认样本 n=120、五类对比、全州概况、五个时段的事故数），对不上就报错。六边形用的是当初逐条复现的 Tableau HEXBIN 算法，每个格子里的事故和看板一样。
 - 浅色模式用提交后定的浅色配色（越多越深），深色模式在深色底图上反过来（越多越亮）。两套色带和“高于 / 低于全州”两种颜色都用色板校验脚本查过。
 - 底图是 OpenFreeMap（免费，不需要密钥），地图引擎是 MapLibre GL。
 
-本地预览：运行 `python3 -m http.server 8797 --directory web`，然后打开 <http://localhost:8797>。重新生成数据：`python3 tools/build_web_data.py <课程数据目录>`；测试：`node tests/model.test.mjs`。
+本地预览：运行 `python3 -m http.server 8797 --directory web`，然后打开 <http://localhost:8797>。重新生成数据：`python3 tools/build_web_data.py <课程数据目录>`；测试：`node tests/model.test.mjs`（数字）和 `node tests/words.test.mjs`（中英文案一一对应）。
 
 ### 怎么打开 Tableau 文件
 
