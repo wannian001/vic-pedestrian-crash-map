@@ -215,8 +215,10 @@ const W = {
   },
 };
 
-export function t(key, vars = {}) {
-  const s = W[lang][key] ?? W.en[key] ?? key;
+export function t(key, vars = {}) { return tIn(lang, key, vars); }
+// the same in a given language: the page head shows its title and summary in both
+export function tIn(which, key, vars = {}) {
+  const s = W[which][key] ?? W.en[key] ?? key;
   return s.replace(/\{(\w+)\}/g, (_, k) => (vars[k] ?? `{${k}}`));
 }
 
