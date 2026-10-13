@@ -1,4 +1,4 @@
-/* The crash map's own rules on top of the dayring kit (kit/css). Data colours were checked with the dataviz
+/* The crash map's own rules on top of the Proactive Health AIO kit (kit/css; exported when it was called dayring). Data colours were checked with the dataviz
    validator: the hex ramp is one hue, lighter to darker on the light map (more crashes = darker) and the other way
    round on the dark map, each step clearly apart and the faintest step at least 2:1 against its basemap; the two
    "higher / lower than Victoria" colours pass the colour-vision checks in both modes. */

@@ -1,12 +1,12 @@
 // The page: one dashboard. A map with three views (hotspots, single crashes, footfall), four filters, the
-// comparison of the selected area with Victoria, and the fixed overview. Built on the dayring design kit.
+// comparison of the selected area with Victoria, and the fixed overview. Built on the Proactive Health AIO design kit (then called dayring).
 import { esc, installTooltip } from "../kit/js/charts.js";
 import { load, filtered, hexes, hexCentre, selectedMask, factor, bandOf, BANDS, FACTORS } from "./model.js";
 import { getLang, setLang, t, tIn, num, pct, sevName, bandName, ageName, valueName, dateText, timeText } from "./i18n.js";
 import { createMap } from "./map.js";
 
 const REPO = "https://github.com/wannian001/vic-pedestrian-crash-map";
-const KIT = "https://github.com/wannian001/dayring/blob/main/docs/DESIGN_KIT.md";
+const KIT = "https://github.com/wannian001/proactive-health-aio/blob/main/docs/DESIGN_KIT.md";
 const store = {
   get(key) { try { return localStorage.getItem(`crashmap.${key}`); } catch { return null; } },
   set(key, value) { try { localStorage.setItem(`crashmap.${key}`, value); } catch { /* private mode */ } },

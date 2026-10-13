@@ -103,7 +103,7 @@ const W = {
     "src.map": "Basemap: OpenFreeMap, © OpenMapTiles, data © OpenStreetMap contributors.",
     "src.ai": "Built with Claude Code from the author's Tableau workbook; the author set the requirements and checked the numbers.",
     "foot.repo": "Source and the Tableau workbook",
-    "foot.kit": "Design: dayring kit",
+    "foot.kit": "Design: Proactive Health AIO kit",
 
     "tip.hex": "{lga}\n{n} crashes · {period}\n{sev}\nClick to compare with Victoria",
     "tip.hex.many": "{lga} + nearby",
@@ -205,7 +205,7 @@ const W = {
     "src.map": "底图：OpenFreeMap，© OpenMapTiles，数据 © OpenStreetMap contributors。",
     "src.ai": "由 Claude Code 依据作者的 Tableau 工作簿搭建；需求和数字核对由作者完成。",
     "foot.repo": "源码和 Tableau 工作簿",
-    "foot.kit": "设计：dayring 设计套件",
+    "foot.kit": "设计：主动健康管理 AIO 设计套件",
 
     "tip.hex": "{lga}\n{n} 起 · {period}\n{sev}\n点一下，和全州比",
     "tip.hex.many": "{lga} 及周边",
